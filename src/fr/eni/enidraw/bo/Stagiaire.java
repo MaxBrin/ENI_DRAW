@@ -57,6 +57,24 @@ public class Stagiaire {
 	}
 
 	/**
+	 * @param idStagiaire
+	 * @param nom
+	 * @param prenom
+	 * @param sexe
+	 * @param cda
+	 * @param presence
+	 */
+	public Stagiaire(int idStagiaire, String nom, String prenom, char sexe, boolean cda, boolean presence) {
+		super();
+		this.idStagiaire = idStagiaire;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.sexe = sexe;
+		this.cda = cda;
+		this.presence = presence;
+	}
+
+	/**
 	 * @param idStagiaire the idStagiaire to set
 	 */
 	public void setIdStagiaire(int idStagiaire) {
