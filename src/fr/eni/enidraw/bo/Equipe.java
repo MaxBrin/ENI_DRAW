@@ -3,6 +3,7 @@
  */
 package fr.eni.enidraw.bo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,21 +21,21 @@ public class Equipe {
 	 * @param reference
 	 * @param stagiaire
 	 */
-	public Equipe(int idEquipe, String reference, List<Stagiaire> listStagiaire) {
+	public Equipe(int idEquipe, String reference) {
 		super();
 		this.idEquipe = idEquipe;
 		this.reference = reference;
-		listStagiaire = listStagiaire;
+		listStagiaire = new ArrayList<Stagiaire>();
 	}
 
 	/**
 	 * @param reference
 	 * @param stagiaire
 	 */
-	public Equipe(String reference, List<Stagiaire> listStagiaire) {
+	public Equipe(String reference) {
 		super();
 		this.reference = reference;
-		listStagiaire = listStagiaire;
+		listStagiaire = new ArrayList<Stagiaire>();
 	}
 
 	/**
@@ -72,11 +73,8 @@ public class Equipe {
 		return listStagiaire;
 	}
 
-	/**
-	 * @param stagiaire the stagiaire to set
-	 */
-	public void setStagiaire(List<Stagiaire> listStagiaire) {
-		listStagiaire = listStagiaire;
+	public void addStagiaire(Stagiaire stagiaire) {
+		listStagiaire.add(stagiaire);
 	}
 
 	public Stagiaire getStagiaire(int index) {

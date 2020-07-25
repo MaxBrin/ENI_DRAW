@@ -47,6 +47,7 @@ public class StagiaireDAOJDBCImpl implements StagiaireDAO {
 			ResultSet rs = stmt.executeQuery(SQLSELECTALL);
 			listStagiaire.add(new Stagiaire(rs.getInt("idStagiaire"), rs.getString("nom"), rs.getString("prenom"),
 					rs.getString("sexe").charAt(0), rs.getBoolean("cda"), rs.getBoolean("presence")));
+
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
