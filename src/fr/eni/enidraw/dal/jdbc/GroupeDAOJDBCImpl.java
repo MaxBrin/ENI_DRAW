@@ -21,7 +21,7 @@ import fr.eni.enidraw.dal.GroupeDAO;
  */
 public class GroupeDAOJDBCImpl implements GroupeDAO {
 	private static final String SQLINSERT = "INSERT INTO dbo.Groupes VALUES (?,?)";
-	private static final String SQLSELECTBYID = "SELECT idGroupe,reference FROM Groupes JOIN Stagiaires WHERE idGroupe=?";
+	private static final String SQLSELECTBYID = "SELECT idGroupe,reference FROM Groupes  WHERE idGroupe=?";
 	private static final String SQLSELECTALL = "SELECT idGroupe,reference FROM Groupes";
 	private static final String SQLUPDATE = "UPDATE  Groupes SET reference = ? WHERE idGroupe = ? ";
 	private static final String SQLDELETE = "DELETE FROM Groupes WHERE idGroupe =?";

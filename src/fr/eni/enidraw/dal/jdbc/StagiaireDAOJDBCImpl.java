@@ -35,7 +35,7 @@ public class StagiaireDAOJDBCImpl implements StagiaireDAO {
 		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLINSERT,
 				Statement.RETURN_GENERATED_KEYS)) {
 			List<Groupe> listGroupe = DAOFactory.getGroupeDAO().selectAll();
-			if (listGroupe.get(0) == null) {
+			if (listGroupe.isEmpty()) {
 				DAOFactory.getGroupeDAO().insert(new Groupe(1, "First Team"));
 			}
 			stmt.setInt(1, 1);
