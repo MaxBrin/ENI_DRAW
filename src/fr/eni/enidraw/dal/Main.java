@@ -1,17 +1,17 @@
 package fr.eni.enidraw.dal;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import fr.eni.enidraw.dal.jdbc.JdbcTools;
+import fr.eni.enidraw.bo.Stagiaire;
 
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		try {
-			Connection con = JdbcTools.getConnection();
-		} catch (SQLException e) {
+			Stagiaire max = new Stagiaire("Brin", "Max", 'M', false, false);
+			StagiaireDAO sDAO = DAOFactory.getStagiaireDAO();
+			sDAO.insert(max);
+			System.out.println(max);
+			System.out.println(DAOFactory.getStagiaireDAO().selectAll());
+		} catch (DALException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -6,13 +6,16 @@ package fr.eni.enidraw.bo;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * @author Maxime Brin
  * @version
  * @dateDeCréation 24 juil. 2020
  */
-public class Equipe {
-	private int idEquipe;
+@Data
+public class Groupe {
+	private int idGroupe;
 	private String reference;
 	private List<Stagiaire> listStagiaire;
 
@@ -21,9 +24,9 @@ public class Equipe {
 	 * @param reference
 	 * @param stagiaire
 	 */
-	public Equipe(int idEquipe, String reference) {
+	public Groupe(int idGroupe, String reference) {
 		super();
-		this.idEquipe = idEquipe;
+		this.idGroupe = idGroupe;
 		this.reference = reference;
 		listStagiaire = new ArrayList<Stagiaire>();
 	}
@@ -32,51 +35,27 @@ public class Equipe {
 	 * @param reference
 	 * @param stagiaire
 	 */
-	public Equipe(String reference) {
+	public Groupe(String reference) {
 		super();
 		this.reference = reference;
 		listStagiaire = new ArrayList<Stagiaire>();
 	}
 
 	/**
-	 * @return the idEquipe
+	 * Rajoute un stagiaire à la liste de l'équipe
+	 * 
+	 * @param stagiaire
 	 */
-	public int getIdEquipe() {
-		return idEquipe;
-	}
-
-	/**
-	 * @param idEquipe the idEquipe to set
-	 */
-	public void setIdEquipe(int idEquipe) {
-		this.idEquipe = idEquipe;
-	}
-
-	/**
-	 * @return the reference
-	 */
-	public String getReference() {
-		return reference;
-	}
-
-	/**
-	 * @param reference the reference to set
-	 */
-	public void setReference(String reference) {
-		this.reference = reference;
-	}
-
-	/**
-	 * @return the stagiaire
-	 */
-	public List<Stagiaire> getListStagiaire() {
-		return listStagiaire;
-	}
-
 	public void addStagiaire(Stagiaire stagiaire) {
 		listStagiaire.add(stagiaire);
 	}
 
+	/**
+	 * Recupère un stagiaire en fonction de son index dans la liste
+	 * 
+	 * @param index
+	 * @return
+	 */
 	public Stagiaire getStagiaire(int index) {
 		return listStagiaire.get(index);
 	}
