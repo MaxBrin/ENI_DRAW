@@ -3,14 +3,12 @@
  */
 package fr.eni.enidraw.bo;
 
-import lombok.Data;
-
 /**
  * @author Maxime Brin
  * @version
  * @dateDeCréation 24 juil. 2020
  */
-@Data
+
 public class Stagiaire {
 	private int idStagiaire;
 	private String nom;
@@ -55,7 +53,6 @@ public class Stagiaire {
 		this.sexe = sexe;
 		this.cda = cda;
 		this.presence = presence;
-		this.groupe = groupe;
 	}
 
 	/**
@@ -74,6 +71,110 @@ public class Stagiaire {
 		this.sexe = sexe;
 		this.cda = cda;
 		this.presence = presence;
+	}
+
+	/**
+	 * @return the idStagiaire
+	 */
+	public int getIdStagiaire() {
+		return idStagiaire;
+	}
+
+	/**
+	 * @param idStagiaire the idStagiaire to set
+	 */
+	public void setIdStagiaire(int idStagiaire) {
+		this.idStagiaire = idStagiaire;
+	}
+
+	/**
+	 * @return the nom
+	 */
+	public String getNom() {
+		return nom;
+	}
+
+	/**
+	 * @param nom the nom to set
+	 */
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	/**
+	 * @return the prenom
+	 */
+	public String getPrenom() {
+		return prenom;
+	}
+
+	/**
+	 * @param prenom the prenom to set
+	 */
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
+	}
+
+	/**
+	 * @return the sexe
+	 */
+	public char getSexe() {
+		return sexe;
+	}
+
+	/**
+	 * @param sexe the sexe to set
+	 */
+	public void setSexe(char sexe) {
+		this.sexe = sexe;
+	}
+
+	/**
+	 * @return the cda
+	 */
+	public boolean isCda() {
+		return cda;
+	}
+
+	/**
+	 * @param cda the cda to set
+	 */
+	public void setCda(boolean cda) {
+		this.cda = cda;
+	}
+
+	/**
+	 * @return the presence
+	 */
+	public boolean isPresence() {
+		return presence;
+	}
+
+	/**
+	 * @param presence the presence to set
+	 */
+	public void setPresence(boolean presence) {
+		this.presence = presence;
+	}
+
+	/**
+	 * @return the groupe
+	 */
+	public Groupe getGroupe() {
+		return groupe;
+	}
+
+	/**
+	 * @param groupe the groupe to set
+	 */
+	public void setGroupe(Groupe groupe) {
+		this.groupe = groupe;
+	}
+
+	@Override
+	public String toString() {
+		return "Stagiaire [idStagiaire=" + idStagiaire + ", nom=" + nom + ", prenom=" + prenom + ", sexe=" + sexe
+				+ ", cda=" + cda + ", presence=" + presence + ", groupe=" + groupe.getIdGroupe() + "]";
 	}
 
 }

@@ -36,7 +36,16 @@ public interface StagiaireDAO {
 	 * @return
 	 * @throws DALException
 	 */
-	public Stagiaire selectById(int id) throws DALException;
+	public Stagiaire selectByIdStagiaire(int id) throws DALException;
+
+	/**
+	 * Méthode pour récuperer une liste de stagiaire en fonction d'un idGroupe
+	 * 
+	 * @param id
+	 * @return
+	 * @throws DALException
+	 */
+	public List<Stagiaire> selectByIdGroupe(int id) throws DALException;
 
 	/**
 	 * Methode pour mettre a jour les données d'un stagiaire

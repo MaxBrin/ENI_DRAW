@@ -21,7 +21,7 @@ import fr.eni.enidraw.dal.GroupeDAO;
  */
 public class GroupeDAOJDBCImpl implements GroupeDAO {
 	private static final String SQLINSERT = "INSERT INTO dbo.Groupes VALUES (?,?)";
-	private static final String SQLSELECTBYID = "SELECT idGroupe,reference FROM Groupes WHERE idGroupe=?";
+	private static final String SQLSELECTBYID = "SELECT idGroupe,reference FROM Groupes JOIN Stagiaires WHERE idGroupe=?";
 	private static final String SQLSELECTALL = "SELECT idGroupe,reference FROM Groupes";
 	private static final String SQLUPDATE = "UPDATE  Groupes SET reference = ? WHERE idGroupe = ? ";
 	private static final String SQLDELETE = "DELETE FROM Groupes WHERE idGroupe =?";
@@ -44,11 +44,10 @@ public class GroupeDAOJDBCImpl implements GroupeDAO {
 		try (Statement stmt = JdbcTools.getConnection().createStatement();) {
 			ResultSet rs = stmt.executeQuery(SQLSELECTALL);
 			Groupe groupe = null;
-			if (rs.next()) {
+			while (rs.next()) {
 				groupe = new Groupe(rs.getInt("idGroupe"), rs.getString("reference"));
+				listGroupe.add(groupe);
 			}
-			listGroupe.add(groupe);
-
 		} catch (Exception e) {
 			throw new DALException("SelectAll failed - ", e);
 		}
@@ -59,13 +58,15 @@ public class GroupeDAOJDBCImpl implements GroupeDAO {
 	@Override
 	public Groupe selectById(int id) throws DALException {
 		Groupe groupe = null;
-		try (Statement stmt = JdbcTools.getConnection().createStatement();) {
-			ResultSet rs = stmt.executeQuery(SQLSELECTBYID);
+		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLSELECTBYID)) {
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				groupe = new Groupe(rs.getInt("idGroupe"), rs.getString("reference"));
+
 			}
 		} catch (Exception e) {
-			throw new DALException("SelectAll failed - ", e);
+			throw new DALException("selectById failed - ", e);
 		}
 		return groupe;
 	}
