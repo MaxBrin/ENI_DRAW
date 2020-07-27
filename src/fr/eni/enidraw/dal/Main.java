@@ -21,10 +21,14 @@ public class Main {
 			sDAO.insert(tanguy);
 
 			System.out.println(DAOFactory.getStagiaireDAO().selectByIdStagiaire(5));
-			System.out.println(DAOFactory.getGroupeDAO().selectAll());
 			Groupe groupe = DAOFactory.getGroupeDAO().selectById(1);
-			System.out.println(DAOFactory.getStagiaireDAO().selectByIdGroupe(1));
-			System.out.println(groupe.toString());
+			Groupe groupe2 = new Groupe(2, "Seconde Team");
+//			DAOFactory.getGroupeDAO().insert(groupe2);
+			max.setGroupe(groupe2);
+			System.out.println(max);
+			DAOFactory.getStagiaireDAO().update(max);
+			groupe2 = DAOFactory.getGroupeDAO().selectById(2);
+			System.out.println(groupe2);
 		} catch (DALException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

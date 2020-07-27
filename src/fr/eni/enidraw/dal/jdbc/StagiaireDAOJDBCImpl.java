@@ -27,7 +27,7 @@ public class StagiaireDAOJDBCImpl implements StagiaireDAO {
 	private static String SQLSELECTBYIDSTAGIAIRE = "SELECT idStagiaire, nom, prenom, sexe, cda, presentiel, idGroupe FROM Stagiaires WHERE idStagiaire=?";
 	private static String SQLSELECTBYIDGROUPE = "SELECT idStagiaire, nom, prenom, sexe, cda, presentiel, idGroupe FROM Stagiaires WHERE idGroupe=?";
 	private static String SQLSELECTALL = "SELECT idStagiaire, nom, prenom, sexe, cda, presentiel, idGroupe FROM Stagiaires";
-	private static final String SQLUPDATE = "UPDATE  Stagiaires SET idGroupe = ?,nom = ?, prenom = ?,sexe = ?, cda = ?, presence = ? WHERE idStagiaire = ? ";
+	private static final String SQLUPDATE = "UPDATE  Stagiaires SET idGroupe = ?,nom = ?, prenom = ?,sexe = ?, cda = ?, presentiel = ? WHERE idStagiaire = ? ";
 	private static final String SQLDELETE = "DELETE FROM Stagiaires WHERE idStagiaire = ?";
 
 	@Override

@@ -26,7 +26,7 @@ public class Groupe {
 		super();
 		this.idGroupe = idGroupe;
 		this.reference = reference;
-		listStagiaire = new ArrayList<Stagiaire>();
+		this.listStagiaire = new ArrayList<Stagiaire>();
 	}
 
 	/**
@@ -36,7 +36,11 @@ public class Groupe {
 	public Groupe(String reference) {
 		super();
 		this.reference = reference;
-		listStagiaire = new ArrayList<Stagiaire>();
+		this.listStagiaire = new ArrayList<Stagiaire>();
+	}
+
+	public Groupe() {
+		this.listStagiaire = new ArrayList<Stagiaire>();
 	}
 
 	/**

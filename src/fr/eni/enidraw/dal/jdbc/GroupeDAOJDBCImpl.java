@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.enidraw.bo.Groupe;
+import fr.eni.enidraw.bo.Stagiaire;
 import fr.eni.enidraw.dal.DALException;
 import fr.eni.enidraw.dal.GroupeDAO;
 
@@ -21,7 +22,7 @@ import fr.eni.enidraw.dal.GroupeDAO;
  */
 public class GroupeDAOJDBCImpl implements GroupeDAO {
 	private static final String SQLINSERT = "INSERT INTO dbo.Groupes VALUES (?,?)";
-	private static final String SQLSELECTBYID = "SELECT idGroupe,reference FROM Groupes  WHERE idGroupe=?";
+	private static final String SQLSELECTBYID = "SELECT idStagiaire,nom,prenom,sexe,cda,presentiel ,g.idGroupe,reference FROM Groupes g JOIN Stagiaires s ON s.idGroupe = g.idGroupe WHERE g.idGroupe=?";
 	private static final String SQLSELECTALL = "SELECT idGroupe,reference FROM Groupes";
 	private static final String SQLUPDATE = "UPDATE  Groupes SET reference = ? WHERE idGroupe = ? ";
 	private static final String SQLDELETE = "DELETE FROM Groupes WHERE idGroupe =?";
@@ -57,12 +58,17 @@ public class GroupeDAOJDBCImpl implements GroupeDAO {
 
 	@Override
 	public Groupe selectById(int id) throws DALException {
-		Groupe groupe = null;
+		Groupe groupe = new Groupe();
 		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLSELECTBYID)) {
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
-				groupe = new Groupe(rs.getInt("idGroupe"), rs.getString("reference"));
+			while (rs.next()) {
+				Stagiaire stagiaire = new Stagiaire(rs.getInt("idStagiaire"), rs.getString("nom"),
+						rs.getString("prenom"), rs.getString("sexe").charAt(0), rs.getBoolean("cda"),
+						rs.getBoolean("presentiel"), new Groupe(rs.getInt("idGroupe"), rs.getString("reference")));
+				groupe.setIdGroupe(rs.getInt("idGroupe"));
+				groupe.setReference(rs.getString("reference"));
+				groupe.addStagiaire(stagiaire);
 
 			}
 		} catch (Exception e) {
