@@ -80,9 +80,13 @@ public class StagiaireDAOJDBCImpl implements StagiaireDAO {
 		Stagiaire stagiaire = null;
 		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLSELECTBYIDSTAGIAIRE)) {
 			stmt.setInt(1, id);
+
 			ResultSet rs = stmt.executeQuery();
-			stagiaire = new Stagiaire(rs.getInt("idStagiaire"), rs.getString("nom"), rs.getString("prenom"),
-					rs.getString("sexe").charAt(0), rs.getBoolean("cda"), rs.getBoolean("presentiel"));
+			if (rs.next()) {
+				stagiaire = new Stagiaire(rs.getInt("idStagiaire"), rs.getString("nom"), rs.getString("prenom"),
+						rs.getString("sexe").charAt(0), rs.getBoolean("cda"), rs.getBoolean("presentiel"),
+						DAOFactory.getGroupeDAO().selectById(rs.getInt("idGroupe")));
+			}
 
 		} catch (Exception e) {
 			throw new DALException("SelectById failed - ", e);
@@ -99,7 +103,9 @@ public class StagiaireDAOJDBCImpl implements StagiaireDAO {
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				stagiaire = new Stagiaire(rs.getInt("idStagiaire"), rs.getString("nom"), rs.getString("prenom"),
-						rs.getString("sexe").charAt(0), rs.getBoolean("cda"), rs.getBoolean("presentiel"));
+						rs.getString("sexe").charAt(0), rs.getBoolean("cda"), rs.getBoolean("presentiel"),
+						DAOFactory.getGroupeDAO().selectById(rs.getInt("idGroupe")));
+				System.out.println(stagiaire);
 				stagiaires.add(stagiaire);
 			}
 
