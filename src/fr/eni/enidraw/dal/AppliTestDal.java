@@ -23,9 +23,12 @@ public class AppliTestDal {
 			sDAO.insert(tanguy);
 
 			// Affichage d'un test de selectByIdStagiaire
+			System.out.println("Affichage d'un stagiaire en fonction de son id");
 			System.out.println(DAOFactory.getStagiaireDAO().selectByIdStagiaire(5));
 			// Test de selectById pour un groupe
-			Groupe groupe1 = DAOFactory.getGroupeDAO().selectById(1);
+			System.out.println("------------------------");
+			System.out.println("Affichage d'un groupe en fonction de son id");
+			System.out.println(DAOFactory.getGroupeDAO().selectById(1));
 			// Création d'un deuxième groupe test
 			Groupe groupe2 = new Groupe(2, "Seconde Team");
 			// Insertion du groupe test
@@ -35,6 +38,7 @@ public class AppliTestDal {
 			// Test Update pour un stagiaire avec changement de groupe et affichage du
 			// groupe
 			DAOFactory.getStagiaireDAO().update(max);
+			System.out.println("-----------------");
 			System.out.println(DAOFactory.getStagiaireDAO().selectByIdGroupe(2));
 			// Test Delete pour un stagiaire
 			DAOFactory.getStagiaireDAO().delete(john.getIdStagiaire());
