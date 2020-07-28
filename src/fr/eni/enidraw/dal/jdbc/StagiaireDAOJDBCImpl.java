@@ -64,9 +64,12 @@ public class StagiaireDAOJDBCImpl implements StagiaireDAO {
 			ResultSet rs = stmt.executeQuery(SQLSELECTALL);
 			Stagiaire stagiaire = null;
 			while (rs.next()) {
+				// Recupération d'un stagiaire
 				stagiaire = new Stagiaire(rs.getInt("idStagiaire"), rs.getString("nom"), rs.getString("prenom"),
 						rs.getString("sexe").charAt(0), rs.getBoolean("cda"), rs.getBoolean("presentiel"),
+						// Récupération d'un groupe
 						DAOFactory.getGroupeDAO().selectById(rs.getInt("idGroupe")));
+				// Ajout du stagiaire à la liste de tous les stagiaires
 				listStagiaire.add(stagiaire);
 			}
 		} catch (Exception e) {
@@ -83,8 +86,10 @@ public class StagiaireDAOJDBCImpl implements StagiaireDAO {
 
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
+				// Recupération du stagiaire avec idStagiaire == id
 				stagiaire = new Stagiaire(rs.getInt("idStagiaire"), rs.getString("nom"), rs.getString("prenom"),
 						rs.getString("sexe").charAt(0), rs.getBoolean("cda"), rs.getBoolean("presentiel"),
+						// Récupération du groupe de ce stagiaire
 						DAOFactory.getGroupeDAO().selectById(rs.getInt("idGroupe")));
 			}
 
@@ -102,10 +107,12 @@ public class StagiaireDAOJDBCImpl implements StagiaireDAO {
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
+				// Recuperation d'un stagiaire avec idGroupe==id
 				stagiaire = new Stagiaire(rs.getInt("idStagiaire"), rs.getString("nom"), rs.getString("prenom"),
 						rs.getString("sexe").charAt(0), rs.getBoolean("cda"), rs.getBoolean("presentiel"),
+						// Recuperation du groupe du stagiaire
 						DAOFactory.getGroupeDAO().selectById(rs.getInt("idGroupe")));
-				System.out.println(stagiaire);
+				// Ajout d'un stagiaire à la liste du groupe avec idGroupe==id
 				stagiaires.add(stagiaire);
 			}
 

@@ -23,7 +23,7 @@ import fr.eni.enidraw.dal.GroupeDAO;
 public class GroupeDAOJDBCImpl implements GroupeDAO {
 	private static final String SQLINSERT = "INSERT INTO dbo.Groupes VALUES (?,?)";
 	private static final String SQLSELECTBYID = "SELECT idStagiaire,nom,prenom,sexe,cda,presentiel ,g.idGroupe,reference FROM Groupes g JOIN Stagiaires s ON s.idGroupe = g.idGroupe WHERE g.idGroupe=?";
-	private static final String SQLSELECTALL = "SELECT idGroupe,reference FROM Groupes";
+	private static final String SQLSELECTALL = "SELECT idStagiaire,nom,prenom,sexe,cda,presentiel ,g.idGroupe,reference FROM Groupes g JOIN Stagiaires s ON s.idGroupe = g.idGroupe";
 	private static final String SQLUPDATE = "UPDATE  Groupes SET reference = ? WHERE idGroupe = ? ";
 	private static final String SQLDELETE = "DELETE FROM Groupes WHERE idGroupe =?";
 
@@ -63,11 +63,14 @@ public class GroupeDAOJDBCImpl implements GroupeDAO {
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
+				// Recuperation d'un stagiaire
 				Stagiaire stagiaire = new Stagiaire(rs.getInt("idStagiaire"), rs.getString("nom"),
 						rs.getString("prenom"), rs.getString("sexe").charAt(0), rs.getBoolean("cda"),
 						rs.getBoolean("presentiel"), new Groupe(rs.getInt("idGroupe"), rs.getString("reference")));
+				// Creation du groupe
 				groupe.setIdGroupe(rs.getInt("idGroupe"));
 				groupe.setReference(rs.getString("reference"));
+				// Ajout du stagiaire à la liste du groupe
 				groupe.addStagiaire(stagiaire);
 
 			}
@@ -93,6 +96,7 @@ public class GroupeDAOJDBCImpl implements GroupeDAO {
 	@Override
 	public void delete(int idGroupe) throws DALException {
 		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLDELETE);) {
+			// FIXME
 			stmt.setInt(1, idGroupe);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
