@@ -23,13 +23,14 @@ import fr.eni.enidraw.dal.GroupeDAO;
 public class GroupeDAOJDBCImpl implements GroupeDAO {
 	private static final String SQLINSERT = "INSERT INTO dbo.Groupes VALUES (?,?)";
 	private static final String SQLSELECTBYID = "SELECT idStagiaire,nom,prenom,sexe,cda,presentiel ,g.idGroupe,reference FROM Groupes g JOIN Stagiaires s ON s.idGroupe = g.idGroupe WHERE g.idGroupe=?";
-	private static final String SQLSELECTALL = "SELECT idStagiaire,nom,prenom,sexe,cda,presentiel ,g.idGroupe,reference FROM Groupes g JOIN Stagiaires s ON s.idGroupe = g.idGroupe";
+	private static final String SQLSELECTALL = "SELECT idGroupe ,reference FROM Groupes ";
 	private static final String SQLUPDATE = "UPDATE  Groupes SET reference = ? WHERE idGroupe = ? ";
 	private static final String SQLDELETE = "DELETE FROM Groupes WHERE idGroupe =?";
+	private static final String SQL_UPDATE_IDGROUPE_STAGIAIRE = "UPDATE Stagiaires SET idGroupe = ? WHERE idGroupe = ?";
 
 	@Override
 	public void insert(Groupe groupe) throws DALException {
-		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLINSERT)) {
+		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLINSERT);) {
 			stmt.setInt(1, groupe.getIdGroupe());
 			stmt.setString(2, groupe.getReference());
 			stmt.executeUpdate();
@@ -46,6 +47,7 @@ public class GroupeDAOJDBCImpl implements GroupeDAO {
 			ResultSet rs = stmt.executeQuery(SQLSELECTALL);
 			Groupe groupe = null;
 			while (rs.next()) {
+				// FIXME
 				groupe = new Groupe(rs.getInt("idGroupe"), rs.getString("reference"));
 				listGroupe.add(groupe);
 			}
@@ -59,7 +61,7 @@ public class GroupeDAOJDBCImpl implements GroupeDAO {
 	@Override
 	public Groupe selectById(int id) throws DALException {
 		Groupe groupe = new Groupe();
-		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLSELECTBYID)) {
+		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLSELECTBYID);) {
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -82,7 +84,7 @@ public class GroupeDAOJDBCImpl implements GroupeDAO {
 
 	@Override
 	public void update(Groupe groupe) throws DALException {
-		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLUPDATE)) {
+		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLUPDATE);) {
 			stmt.setString(1, groupe.getReference());
 			stmt.setInt(2, groupe.getIdGroupe());
 			stmt.executeUpdate();
@@ -95,8 +97,15 @@ public class GroupeDAOJDBCImpl implements GroupeDAO {
 
 	@Override
 	public void delete(int idGroupe) throws DALException {
-		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLDELETE);) {
-			// FIXME
+		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLDELETE);
+				PreparedStatement stmtUpdateStagiaire = JdbcTools.getConnection()
+						.prepareStatement(SQL_UPDATE_IDGROUPE_STAGIAIRE);) {
+			// Mise a jour des Stagiaire pour les enlever du groupe à effacer pour eviter
+			// les conflits avec la FOREIGN KEY
+			stmtUpdateStagiaire.setInt(1, 1);
+			stmtUpdateStagiaire.setInt(2, idGroupe);
+			stmtUpdateStagiaire.executeUpdate();
+			// Effacement du groupe
 			stmt.setInt(1, idGroupe);
 			stmt.executeUpdate();
 		} catch (SQLException e) {

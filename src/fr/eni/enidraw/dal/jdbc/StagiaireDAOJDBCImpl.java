@@ -24,6 +24,7 @@ import fr.eni.enidraw.dal.StagiaireDAO;
 
 public class StagiaireDAOJDBCImpl implements StagiaireDAO {
 	private static String SQLINSERT = "INSERT INTO dbo.Stagiaires VALUES (?,?,?,?,?,?)";
+	private static String SQL_SELECTALL_GROUPE = "SELECT idGroupe,reference FROM Groupes";
 	private static String SQLSELECTBYIDSTAGIAIRE = "SELECT idStagiaire, nom, prenom, sexe, cda, presentiel, idGroupe FROM Stagiaires WHERE idStagiaire=?";
 	private static String SQLSELECTBYIDGROUPE = "SELECT idStagiaire, nom, prenom, sexe, cda, presentiel, idGroupe FROM Stagiaires WHERE idGroupe=?";
 	private static String SQLSELECTALL = "SELECT idStagiaire, nom, prenom, sexe, cda, presentiel, idGroupe FROM Stagiaires";
@@ -33,9 +34,10 @@ public class StagiaireDAOJDBCImpl implements StagiaireDAO {
 	@Override
 	public void insert(Stagiaire stagiaire) throws DALException {
 		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLINSERT,
-				Statement.RETURN_GENERATED_KEYS)) {
-			List<Groupe> listGroupe = DAOFactory.getGroupeDAO().selectAll();
-			if (listGroupe.isEmpty()) {
+				Statement.RETURN_GENERATED_KEYS);
+				Statement stmtSelectAllGroupe = JdbcTools.getConnection().createStatement();) {
+			ResultSet rsGroupe = stmtSelectAllGroupe.executeQuery(SQL_SELECTALL_GROUPE);
+			if (!(rsGroupe.next())) {
 				DAOFactory.getGroupeDAO().insert(new Groupe(1, "First Team"));
 			}
 			stmt.setInt(1, 1);
@@ -81,7 +83,7 @@ public class StagiaireDAOJDBCImpl implements StagiaireDAO {
 	@Override
 	public Stagiaire selectByIdStagiaire(int id) throws DALException {
 		Stagiaire stagiaire = null;
-		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLSELECTBYIDSTAGIAIRE)) {
+		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLSELECTBYIDSTAGIAIRE);) {
 			stmt.setInt(1, id);
 
 			ResultSet rs = stmt.executeQuery();
@@ -103,7 +105,7 @@ public class StagiaireDAOJDBCImpl implements StagiaireDAO {
 	public List<Stagiaire> selectByIdGroupe(int id) throws DALException {
 		Stagiaire stagiaire = null;
 		List<Stagiaire> stagiaires = new ArrayList<Stagiaire>();
-		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLSELECTBYIDGROUPE)) {
+		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLSELECTBYIDGROUPE);) {
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -124,7 +126,7 @@ public class StagiaireDAOJDBCImpl implements StagiaireDAO {
 
 	@Override
 	public void update(Stagiaire stagiaire) throws DALException {
-		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLUPDATE)) {
+		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLUPDATE);) {
 			stmt.setInt(1, stagiaire.getGroupe().getIdGroupe());
 			stmt.setString(2, stagiaire.getNom());
 			stmt.setString(3, stagiaire.getPrenom());

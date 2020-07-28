@@ -42,8 +42,12 @@ public class AppliTestDal {
 			// Récuperation de groupe2 dans la BD
 			groupe2 = DAOFactory.getGroupeDAO().selectById(2);
 			System.out.println(groupe2);
+			// Affichage des groupes avant modif
+			System.out.println(DAOFactory.getGroupeDAO().selectAll());
 			// Test de Delete pour les groupes
 			DAOFactory.getGroupeDAO().delete(2);
+			// Affichage des groupes après modif
+			System.out.println(DAOFactory.getGroupeDAO().selectAll());
 		} catch (DALException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
