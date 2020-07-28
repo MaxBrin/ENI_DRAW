@@ -3,7 +3,7 @@ package fr.eni.enidraw.dal;
 import fr.eni.enidraw.bo.Groupe;
 import fr.eni.enidraw.bo.Stagiaire;
 
-public class Main {
+public class AppliTestDal {
 
 	public static void main(String[] args) {
 		try {
@@ -32,9 +32,13 @@ public class Main {
 			DAOFactory.getGroupeDAO().insert(groupe2);
 			// Mettre un stagiaire dans groupe2
 			max.setGroupe(groupe2);
-			System.out.println(max);
-			// Test Update pour un stagiaire
+			// Test Update pour un stagiaire avec changement de groupe et affichage du
+			// groupe
 			DAOFactory.getStagiaireDAO().update(max);
+			System.out.println(DAOFactory.getStagiaireDAO().selectByIdGroupe(2));
+			// Test Delete pour un stagiaire
+			DAOFactory.getStagiaireDAO().delete(john.getIdStagiaire());
+			System.out.println(DAOFactory.getGroupeDAO().selectById(1));
 			// Récuperation de groupe2 dans la BD
 			groupe2 = DAOFactory.getGroupeDAO().selectById(2);
 			System.out.println(groupe2);

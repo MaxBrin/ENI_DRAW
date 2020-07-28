@@ -100,7 +100,6 @@ public class GroupeDAOJDBCImpl implements GroupeDAO {
 			stmt.setInt(1, idGroupe);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			throw new DALException("Delete failed - ", e);
 		}
 
