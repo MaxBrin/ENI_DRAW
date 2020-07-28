@@ -36,10 +36,13 @@ public class StagiaireDAOJDBCImpl implements StagiaireDAO {
 		try (PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SQLINSERT,
 				Statement.RETURN_GENERATED_KEYS);
 				Statement stmtSelectAllGroupe = JdbcTools.getConnection().createStatement();) {
+			// Verification pour voir si il y'a au moins un groupe dans la BD sinon le
+			// rajouter pour eviter les conflits de FOREIGN KEY
 			ResultSet rsGroupe = stmtSelectAllGroupe.executeQuery(SQL_SELECTALL_GROUPE);
 			if (!(rsGroupe.next())) {
 				DAOFactory.getGroupeDAO().insert(new Groupe(1, "First Team"));
 			}
+
 			stmt.setInt(1, 1);
 			stmt.setString(2, stagiaire.getNom());
 			stmt.setString(3, stagiaire.getPrenom());
@@ -47,7 +50,9 @@ public class StagiaireDAOJDBCImpl implements StagiaireDAO {
 			stmt.setBoolean(5, stagiaire.isCda());
 			stmt.setBoolean(6, stagiaire.isPresence());
 			stmt.executeUpdate();
+			// Rajouter le groupe dans l'instance stagiaire
 			stagiaire.setGroupe(DAOFactory.getGroupeDAO().selectById(1));
+			// Récuperer l'idStagiaire autogénéré par la BD
 			ResultSet rs = stmt.getGeneratedKeys();
 			if (rs.next()) {
 				stagiaire.setIdStagiaire(rs.getInt(1));

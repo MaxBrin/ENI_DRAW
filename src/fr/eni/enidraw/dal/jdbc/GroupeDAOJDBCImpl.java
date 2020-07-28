@@ -24,6 +24,7 @@ public class GroupeDAOJDBCImpl implements GroupeDAO {
 	private static final String SQLINSERT = "INSERT INTO dbo.Groupes VALUES (?,?)";
 	private static final String SQLSELECTBYID = "SELECT idStagiaire,nom,prenom,sexe,cda,presentiel ,g.idGroupe,reference FROM Groupes g JOIN Stagiaires s ON s.idGroupe = g.idGroupe WHERE g.idGroupe=?";
 	private static final String SQLSELECTALL = "SELECT idGroupe ,reference FROM Groupes ";
+	private static final String SQL_SELECT_BY_IDGROUPE = "SELECT idStagiaire, nom, prenom, sexe, cda, presentiel, idGroupe FROM Stagiaires WHERE idGroupe=?";
 	private static final String SQLUPDATE = "UPDATE  Groupes SET reference = ? WHERE idGroupe = ? ";
 	private static final String SQLDELETE = "DELETE FROM Groupes WHERE idGroupe =?";
 	private static final String SQL_UPDATE_IDGROUPE_STAGIAIRE = "UPDATE Stagiaires SET idGroupe = ? WHERE idGroupe = ?";
@@ -43,12 +44,26 @@ public class GroupeDAOJDBCImpl implements GroupeDAO {
 	@Override
 	public List<Groupe> selectAll() throws DALException {
 		List<Groupe> listGroupe = new ArrayList<Groupe>();
-		try (Statement stmt = JdbcTools.getConnection().createStatement();) {
+		try (Statement stmt = JdbcTools.getConnection().createStatement();
+				PreparedStatement stmtSelectByIdStagiaire = JdbcTools.getConnection()
+						.prepareStatement(SQL_SELECT_BY_IDGROUPE)) {
 			ResultSet rs = stmt.executeQuery(SQLSELECTALL);
 			Groupe groupe = null;
 			while (rs.next()) {
-				// FIXME
+				stmtSelectByIdStagiaire.setInt(1, rs.getInt("idGroupe"));
+				ResultSet rsStagiaire = stmtSelectByIdStagiaire.executeQuery();
+				// Création du groupe de la ligne correspondante
 				groupe = new Groupe(rs.getInt("idGroupe"), rs.getString("reference"));
+				Stagiaire stagiaire = null;
+				while (rsStagiaire.next()) {
+					// creation du stagiaire de la ligne correspondante
+					stagiaire = new Stagiaire(rsStagiaire.getInt("idStagiaire"), rsStagiaire.getString("nom"),
+							rsStagiaire.getString("prenom"), rsStagiaire.getString("sexe").charAt(0),
+							rsStagiaire.getBoolean("cda"), rsStagiaire.getBoolean("presentiel"), groupe);
+					// Ajout du stagiaire à la liste stagiaire du groupe
+					groupe.addStagiaire(stagiaire);
+				}
+				// Ajout du groupe à la liste de groupe
 				listGroupe.add(groupe);
 			}
 		} catch (Exception e) {
@@ -65,7 +80,7 @@ public class GroupeDAOJDBCImpl implements GroupeDAO {
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				// Recuperation d'un stagiaire
+				// creation du stagiaire de la ligne correspondante
 				Stagiaire stagiaire = new Stagiaire(rs.getInt("idStagiaire"), rs.getString("nom"),
 						rs.getString("prenom"), rs.getString("sexe").charAt(0), rs.getBoolean("cda"),
 						rs.getBoolean("presentiel"), new Groupe(rs.getInt("idGroupe"), rs.getString("reference")));

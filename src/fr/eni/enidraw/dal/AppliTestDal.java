@@ -25,7 +25,7 @@ public class AppliTestDal {
 			// Affichage d'un test de selectByIdStagiaire
 			System.out.println(DAOFactory.getStagiaireDAO().selectByIdStagiaire(5));
 			// Test de selectById pour un groupe
-			Groupe groupe = DAOFactory.getGroupeDAO().selectById(1);
+			Groupe groupe1 = DAOFactory.getGroupeDAO().selectById(1);
 			// Création d'un deuxième groupe test
 			Groupe groupe2 = new Groupe(2, "Seconde Team");
 			// Insertion du groupe test
@@ -43,11 +43,30 @@ public class AppliTestDal {
 			groupe2 = DAOFactory.getGroupeDAO().selectById(2);
 			System.out.println(groupe2);
 			// Affichage des groupes avant modif
-			System.out.println(DAOFactory.getGroupeDAO().selectAll());
+			System.out.println("----------------------");
+			System.out.println("Affichage avant modif");
+			for (Groupe groupe : DAOFactory.getGroupeDAO().selectAll()) {
+				System.out.println("Groupe " + groupe.getIdGroupe() + " : ");
+				System.out.println();
+				for (Stagiaire stagiaire : groupe.getListStagiaire()) {
+					System.out.println("Stagiaire " + stagiaire.getIdStagiaire() + " : ");
+					System.out.println(stagiaire);
+
+				}
+			}
+
 			// Test de Delete pour les groupes
 			DAOFactory.getGroupeDAO().delete(2);
 			// Affichage des groupes après modif
-			System.out.println(DAOFactory.getGroupeDAO().selectAll());
+			System.out.println("----------------------");
+			System.out.println("Affichage après modif");
+			for (Groupe groupe : DAOFactory.getGroupeDAO().selectAll()) {
+				System.out.println("Groupe " + groupe.getIdGroupe() + " : ");
+				for (Stagiaire stagiaire : groupe.getListStagiaire()) {
+					System.out.println("Stagiaire " + stagiaire.getIdStagiaire() + " : ");
+					System.out.println(stagiaire);
+				}
+			}
 		} catch (DALException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
