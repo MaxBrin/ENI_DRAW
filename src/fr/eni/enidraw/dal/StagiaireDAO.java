@@ -13,14 +13,53 @@ import fr.eni.enidraw.bo.Stagiaire;
  * @dateDeCréation 24 juil. 2020
  */
 public interface StagiaireDAO {
+	/**
+	 * Méthode pour insérer un stagiaire dans la BD
+	 * 
+	 * @param stagiaire
+	 * @throws DALException
+	 */
+	public void insert(Stagiaire stagiaire) throws DALException;
 
-	public void insert(Stagiaire stagiaire);
+	/**
+	 * Méthode pour recupérer toute la liste des stagiaires
+	 * 
+	 * @return
+	 * @throws DALException
+	 */
+	public List<Stagiaire> selectAll() throws DALException;
 
-	public List<Stagiaire> selectAll();
+	/**
+	 * Méthode pour récuperer un stagiaire en fonction de son id
+	 * 
+	 * @param id
+	 * @return
+	 * @throws DALException
+	 */
+	public Stagiaire selectByIdStagiaire(int id) throws DALException;
 
-	public Stagiaire selectById(int id);
+	/**
+	 * Méthode pour récuperer une liste de stagiaire en fonction d'un idGroupe
+	 * 
+	 * @param id
+	 * @return
+	 * @throws DALException
+	 */
+	public List<Stagiaire> selectByIdGroupe(int id) throws DALException;
 
-	public void update(Stagiaire stagiaire);
+	/**
+	 * Methode pour mettre a jour les données d'un stagiaire
+	 * 
+	 * @param stagiaire
+	 * @throws DALException
+	 */
+	public void update(Stagiaire stagiaire) throws DALException;
 
-	public void delete(Stagiaire Stagiaire);
+	/**
+	 * Methode pour effacer un stagiaire de la BD
+	 * 
+	 * @param Stagiaire
+	 * @throws DALException
+	 */
+	public void delete(int idStagiaire) throws DALException;
 }

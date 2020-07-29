@@ -8,6 +8,7 @@ package fr.eni.enidraw.bo;
  * @version
  * @dateDeCréation 24 juil. 2020
  */
+
 public class Stagiaire {
 	private int idStagiaire;
 	private String nom;
@@ -15,7 +16,7 @@ public class Stagiaire {
 	private char sexe;
 	private boolean cda;
 	private boolean presence;
-	private Equipe equipe;
+	private Groupe groupe;
 
 	/**
 	 * @param idStagiaire
@@ -24,10 +25,10 @@ public class Stagiaire {
 	 * @param sexe
 	 * @param cda
 	 * @param presence
-	 * @param equipe
+	 * @param groupe
 	 */
 	public Stagiaire(int idStagiaire, String nom, String prenom, char sexe, boolean cda, boolean presence,
-			Equipe equipe) {
+			Groupe groupe) {
 		super();
 		this.idStagiaire = idStagiaire;
 		this.nom = nom;
@@ -35,7 +36,7 @@ public class Stagiaire {
 		this.sexe = sexe;
 		this.cda = cda;
 		this.presence = presence;
-		this.equipe = equipe;
+		this.groupe = groupe;
 	}
 
 	/**
@@ -44,16 +45,14 @@ public class Stagiaire {
 	 * @param sexe
 	 * @param cda
 	 * @param presence
-	 * @param equipe
 	 */
-	public Stagiaire(String nom, String prenom, char sexe, boolean cda, boolean presence, Equipe equipe) {
+	public Stagiaire(String nom, String prenom, char sexe, boolean cda, boolean presence) {
 		super();
 		this.nom = nom;
 		this.prenom = prenom;
 		this.sexe = sexe;
 		this.cda = cda;
 		this.presence = presence;
-		this.equipe = equipe;
 	}
 
 	/**
@@ -75,59 +74,17 @@ public class Stagiaire {
 	}
 
 	/**
-	 * @param idStagiaire the idStagiaire to set
-	 */
-	public void setIdStagiaire(int idStagiaire) {
-		this.idStagiaire = idStagiaire;
-	}
-
-	/**
-	 * @param nom the nom to set
-	 */
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
-	/**
-	 * @param prenom the prenom to set
-	 */
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
-	}
-
-	/**
-	 * @param sexe the sexe to set
-	 */
-	public void setSexe(char sexe) {
-		this.sexe = sexe;
-	}
-
-	/**
-	 * @param cda the cda to set
-	 */
-	public void setCda(boolean cda) {
-		this.cda = cda;
-	}
-
-	/**
-	 * @param presence the presence to set
-	 */
-	public void setPresence(boolean presence) {
-		this.presence = presence;
-	}
-
-	/**
-	 * @param equipe the equipe to set
-	 */
-	public void setEquipe(Equipe equipe) {
-		this.equipe = equipe;
-	}
-
-	/**
 	 * @return the idStagiaire
 	 */
 	public int getIdStagiaire() {
 		return idStagiaire;
+	}
+
+	/**
+	 * @param idStagiaire the idStagiaire to set
+	 */
+	public void setIdStagiaire(int idStagiaire) {
+		this.idStagiaire = idStagiaire;
 	}
 
 	/**
@@ -138,10 +95,24 @@ public class Stagiaire {
 	}
 
 	/**
+	 * @param nom the nom to set
+	 */
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	/**
 	 * @return the prenom
 	 */
 	public String getPrenom() {
 		return prenom;
+	}
+
+	/**
+	 * @param prenom the prenom to set
+	 */
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
 	}
 
 	/**
@@ -152,10 +123,24 @@ public class Stagiaire {
 	}
 
 	/**
+	 * @param sexe the sexe to set
+	 */
+	public void setSexe(char sexe) {
+		this.sexe = sexe;
+	}
+
+	/**
 	 * @return the cda
 	 */
 	public boolean isCda() {
 		return cda;
+	}
+
+	/**
+	 * @param cda the cda to set
+	 */
+	public void setCda(boolean cda) {
+		this.cda = cda;
 	}
 
 	/**
@@ -166,10 +151,30 @@ public class Stagiaire {
 	}
 
 	/**
-	 * @return the equipe
+	 * @param presence the presence to set
 	 */
-	public Equipe getEquipe() {
-		return equipe;
+	public void setPresence(boolean presence) {
+		this.presence = presence;
+	}
+
+	/**
+	 * @return the groupe
+	 */
+	public Groupe getGroupe() {
+		return groupe;
+	}
+
+	/**
+	 * @param groupe the groupe to set
+	 */
+	public void setGroupe(Groupe groupe) {
+		this.groupe = groupe;
+	}
+
+	@Override
+	public String toString() {
+		return "Stagiaire [idStagiaire=" + idStagiaire + ", nom=" + nom + ", prenom=" + prenom + ", sexe=" + sexe
+				+ ", cda=" + cda + ", presence=" + presence + ", groupe=" + groupe.getIdGroupe() + "]";
 	}
 
 }
