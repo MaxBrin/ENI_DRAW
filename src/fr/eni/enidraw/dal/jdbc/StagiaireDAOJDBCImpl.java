@@ -153,7 +153,6 @@ public class StagiaireDAOJDBCImpl implements StagiaireDAO {
 			stmt.setInt(1, idStagiaire);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			throw new DALException("Delete failed - ", e);
 		}
 

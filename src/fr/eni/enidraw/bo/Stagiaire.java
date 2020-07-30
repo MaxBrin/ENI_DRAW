@@ -10,10 +10,10 @@ package fr.eni.enidraw.bo;
  */
 
 public class Stagiaire {
-	private int idStagiaire;
+	private Integer idStagiaire;
 	private String nom;
 	private String prenom;
-	private char sexe;
+	private Character sexe;
 	private boolean cda;
 	private boolean presence;
 	private Groupe groupe;
@@ -27,7 +27,7 @@ public class Stagiaire {
 	 * @param presence
 	 * @param groupe
 	 */
-	public Stagiaire(int idStagiaire, String nom, String prenom, char sexe, boolean cda, boolean presence,
+	public Stagiaire(Integer idStagiaire, String nom, String prenom, Character sexe, boolean cda, boolean presence,
 			Groupe groupe) {
 		super();
 		this.idStagiaire = idStagiaire;
@@ -46,7 +46,7 @@ public class Stagiaire {
 	 * @param cda
 	 * @param presence
 	 */
-	public Stagiaire(String nom, String prenom, char sexe, boolean cda, boolean presence) {
+	public Stagiaire(String nom, String prenom, Character sexe, boolean cda, boolean presence) {
 		super();
 		this.nom = nom;
 		this.prenom = prenom;
@@ -63,7 +63,7 @@ public class Stagiaire {
 	 * @param cda
 	 * @param presence
 	 */
-	public Stagiaire(int idStagiaire, String nom, String prenom, char sexe, boolean cda, boolean presence) {
+	public Stagiaire(Integer idStagiaire, String nom, String prenom, Character sexe, boolean cda, boolean presence) {
 		super();
 		this.idStagiaire = idStagiaire;
 		this.nom = nom;
@@ -83,7 +83,7 @@ public class Stagiaire {
 	/**
 	 * @param idStagiaire the idStagiaire to set
 	 */
-	public void setIdStagiaire(int idStagiaire) {
+	public void setIdStagiaire(Integer idStagiaire) {
 		this.idStagiaire = idStagiaire;
 	}
 
@@ -125,7 +125,7 @@ public class Stagiaire {
 	/**
 	 * @param sexe the sexe to set
 	 */
-	public void setSexe(char sexe) {
+	public void setSexe(Character sexe) {
 		this.sexe = sexe;
 	}
 

@@ -72,7 +72,6 @@ public class AppliTestDal {
 				}
 			}
 		} catch (DALException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

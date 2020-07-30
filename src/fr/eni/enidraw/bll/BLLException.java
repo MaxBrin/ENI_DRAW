@@ -19,7 +19,6 @@ public class BLLException extends Exception {
 	 * 
 	 */
 	public BLLException() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -27,7 +26,6 @@ public class BLLException extends Exception {
 	 */
 	public BLLException(String arg0) {
 		super(arg0);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

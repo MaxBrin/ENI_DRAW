@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 public class Groupe {
-	private int idGroupe;
+	private Integer idGroupe;
 	private String reference;
 	private List<Stagiaire> listStagiaire;
 
@@ -22,7 +22,7 @@ public class Groupe {
 	 * @param reference
 	 * @param stagiaire
 	 */
-	public Groupe(int idGroupe, String reference) {
+	public Groupe(Integer idGroupe, String reference) {
 		super();
 		this.idGroupe = idGroupe;
 		this.reference = reference;
@@ -72,7 +72,7 @@ public class Groupe {
 	/**
 	 * @param idGroupe the idGroupe to set
 	 */
-	public void setIdGroupe(int idGroupe) {
+	public void setIdGroupe(Integer idGroupe) {
 		this.idGroupe = idGroupe;
 	}
 

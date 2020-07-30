@@ -7,6 +7,10 @@ import java.util.List;
 
 import fr.eni.enidraw.bo.Groupe;
 import fr.eni.enidraw.bo.Stagiaire;
+import fr.eni.enidraw.dal.DALException;
+import fr.eni.enidraw.dal.DAOFactory;
+import fr.eni.enidraw.dal.GroupeDAO;
+import fr.eni.enidraw.dal.StagiaireDAO;
 
 /**
  * @author Maxime Brin
@@ -14,19 +18,22 @@ import fr.eni.enidraw.bo.Stagiaire;
  * @dateDeCréation 30 juil. 2020
  */
 public class TirageManager {
-	private TirageManager instance;
+	private static TirageManager instance;
+	private static GroupeDAO groupeDAO;
+	private static StagiaireDAO stagiaireDAO;
 
 	// Constructeur
 	private TirageManager() {
-
+		groupeDAO = DAOFactory.getGroupeDAO();
+		stagiaireDAO = DAOFactory.getStagiaireDAO();
 	}
 
 	// Méthode pour avoir mon instance
-	public TirageManager getInstance() {
-		if (this.instance == null) {
-			this.instance = new TirageManager();
+	public static TirageManager getInstance() {
+		if (instance == null) {
+			instance = new TirageManager();
 		}
-		return this.instance;
+		return instance;
 	}
 
 	/**
@@ -36,18 +43,59 @@ public class TirageManager {
 	 * @throws BLLException
 	 */
 	public void verifStagiaire(Stagiaire stagiaire) throws BLLException {
-		// TODO
+		boolean valide = true;
+		StringBuffer sb = new StringBuffer();
+
+		if (stagiaire == null)
+			throw new BLLException("Stagiaire null");
+		if (stagiaire.getNom() == null || stagiaire.getNom().isEmpty()) {
+			sb.append("Le nom du stagiaire est obligatoire.\n");
+			valide = false;
+		}
+		if (stagiaire.getPrenom() == null || stagiaire.getPrenom().isEmpty()) {
+			sb.append("Le prénom du stagiaire est obligatoire.\n");
+			valide = false;
+		}
+		if (stagiaire.getSexe() != 'F' || stagiaire.getSexe() != 'M' || (stagiaire.getSexe() + "").trim().isEmpty()) {
+			sb.append("Le genre du stagiaire est obligatoire.\n");
+			valide = false;
+		}
+		if (!valide) {
+			throw new BLLException(sb.toString());
+		}
 	}
 
 	/**
-	 * Méthode pour vérifier les données d'un groupe et vérifier si il est déjà
-	 * présent dans la BD
+	 * Méthode pour vérifier si un groupe est déjà présent dans la BD
 	 * 
 	 * @param groupe
 	 * @throws BLLException
 	 */
-	public void verifGroupe(Groupe groupe) throws BLLException {
-		// TODO
+	public void verifGroupe(Groupe groupeAVerifier) throws BLLException {
+		boolean valide = true;
+		StringBuffer sb = new StringBuffer();
+		// Verification si le groupe est déjà présent dans la BD
+		try {
+			// Récupération de la liste des groupes présents
+			List<Groupe> groupes = groupeDAO.selectAll();
+			// Si la liste n'est pas vide on verifie
+			if (!groupes.isEmpty()) {
+				// Pour chaque groupe présent dans la liste
+				for (Groupe groupe : groupes) {
+					// Vérification si idGroupe du groupe présent est egale à idGroupe du groupe à
+					// vérifier
+					if (groupe.getIdGroupe() == groupeAVerifier.getIdGroupe()) {
+						sb.append("Le groupe est déjà présent dans la BD\n");
+						valide = false;
+					}
+				}
+			}
+		} catch (DALException e) {
+			e.printStackTrace();
+		}
+		if (!valide) {
+			throw new BLLException(sb.toString());
+		}
 	}
 
 	/**
@@ -57,7 +105,14 @@ public class TirageManager {
 	 * @throws BLLException
 	 */
 	public void ajoutStagiaire(Stagiaire stagiaire) throws BLLException {
-		// TODO
+		try {
+			verifStagiaire(stagiaire);
+			if (stagiaire.getIdStagiaire() != null) {
+				throw new BLLException("Ajout d'un stagiaire déjà présent impossible");
+			}
+		} catch (DALException e) {
+			throw new BLLException("Echec d'ajout Stagiaire", e);
+		}
 	}
 
 	/**

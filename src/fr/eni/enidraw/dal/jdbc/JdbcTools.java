@@ -28,7 +28,6 @@ public class JdbcTools {
 		try {
 			DriverManager.registerDriver(new SQLServerDriver());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
