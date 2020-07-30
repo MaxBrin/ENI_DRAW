@@ -65,7 +65,7 @@ public class Groupe {
 	/**
 	 * @return the idGroupe
 	 */
-	public int getIdGroupe() {
+	public Integer getIdGroupe() {
 		return idGroupe;
 	}
 

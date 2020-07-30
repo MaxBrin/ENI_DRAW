@@ -110,6 +110,7 @@ public class TirageManager {
 			if (stagiaire.getIdStagiaire() != null) {
 				throw new BLLException("Ajout d'un stagiaire déjà présent impossible");
 			}
+			stagiaireDAO.insert(stagiaire);
 		} catch (DALException e) {
 			throw new BLLException("Echec d'ajout Stagiaire", e);
 		}

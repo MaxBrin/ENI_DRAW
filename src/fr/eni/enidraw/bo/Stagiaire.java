@@ -76,7 +76,7 @@ public class Stagiaire {
 	/**
 	 * @return the idStagiaire
 	 */
-	public int getIdStagiaire() {
+	public Integer getIdStagiaire() {
 		return idStagiaire;
 	}
 
@@ -118,7 +118,7 @@ public class Stagiaire {
 	/**
 	 * @return the sexe
 	 */
-	public char getSexe() {
+	public Character getSexe() {
 		return sexe;
 	}
 
