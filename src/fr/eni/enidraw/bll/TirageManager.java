@@ -56,7 +56,7 @@ public class TirageManager {
 			sb.append("Le prénom du stagiaire est obligatoire.\n");
 			valide = false;
 		}
-		if (stagiaire.getSexe() != 'F' || stagiaire.getSexe() != 'M' || (stagiaire.getSexe() + "").trim().isEmpty()) {
+		if (stagiaire.getSexe() != 'F' && stagiaire.getSexe() != 'M' || (stagiaire.getSexe() + "").trim().isEmpty()) {
 			sb.append("Le genre du stagiaire est obligatoire.\n");
 			valide = false;
 		}
@@ -104,7 +104,7 @@ public class TirageManager {
 	 * @param stagiaire
 	 * @throws BLLException
 	 */
-	public void ajoutStagiaire(Stagiaire stagiaire) throws BLLException {
+	public void addStagiaire(Stagiaire stagiaire) throws BLLException {
 		try {
 			verifStagiaire(stagiaire);
 			if (stagiaire.getIdStagiaire() != null) {
@@ -123,7 +123,24 @@ public class TirageManager {
 	 * @throws BLLException
 	 */
 	public void updateStagiaire(Stagiaire stagiaire) throws BLLException {
-		// TODO
+		try {
+			verifStagiaire(stagiaire);
+			boolean verif = false;
+			List<Groupe> groupes = groupeDAO.selectAll();
+			for (Groupe groupe : groupes) {
+				if (groupe.getIdGroupe() == stagiaire.getGroupe().getIdGroupe()) {
+					verif = true;
+				}
+			}
+			if (!verif) {
+				groupeDAO.insert(stagiaire.getGroupe());
+			}
+			stagiaireDAO.update(stagiaire);
+		} catch (DALException e) {
+			throw new BLLException("Echec de updateStagiaire");
+		} catch (NullPointerException e) {
+			throw new BLLException("Stagiaire non présent dans la BD");
+		}
 	}
 
 	/**
@@ -132,8 +149,15 @@ public class TirageManager {
 	 * @param stagiaire
 	 * @throws BLLException
 	 */
-	public void effacerStagiaire(Stagiaire stagiaire) throws BLLException {
-		// TODO
+	public void deleteStagiaire(Stagiaire stagiaire) throws BLLException {
+		try {
+			verifStagiaire(stagiaire);
+			stagiaireDAO.delete(stagiaire.getIdStagiaire());
+		} catch (DALException e) {
+			throw new BLLException("Echec de effacerStagiaire");
+		} catch (NullPointerException e) {
+			throw new BLLException("Stagiaire non présent dans la BD");
+		}
 	}
 
 	/**
@@ -144,8 +168,16 @@ public class TirageManager {
 	 * @throws BLLException
 	 */
 	public Stagiaire getStagiaire(int idStagiaire) throws BLLException {
-		// TODO
-		return null;
+		Stagiaire stagiaire = null;
+		try {
+			stagiaire = stagiaireDAO.selectByIdStagiaire(idStagiaire);
+		} catch (DALException e) {
+			throw new BLLException("Echec de getStagiaire");
+		}
+		if (stagiaire == null) {
+			throw new BLLException("Cet id de stagiaire n'existe pas");
+		}
+		return stagiaire;
 	}
 
 	/**
@@ -155,8 +187,13 @@ public class TirageManager {
 	 * @throws BLLException
 	 */
 	public List<Stagiaire> getListStagiaires() throws BLLException {
-		// TODO
-		return null;
+		List<Stagiaire> stagiaires = null;
+		try {
+			stagiaires = stagiaireDAO.selectAll();
+		} catch (DALException e) {
+			throw new BLLException("Echec de getListStagiaires");
+		}
+		return stagiaires;
 	}
 
 	/**
@@ -166,9 +203,14 @@ public class TirageManager {
 	 * @param idGroupe
 	 * @return
 	 */
-	public List<Stagiaire> getListStagiairesByGroupe(int idGroupe) {
-		// TODO
-		return null;
+	public List<Stagiaire> getListStagiairesByGroupe(int idGroupe) throws BLLException {
+		List<Stagiaire> stagiaires = null;
+		try {
+			stagiaires = stagiaireDAO.selectByIdGroupe(idGroupe);
+		} catch (DALException e) {
+			throw new BLLException("Echec de getListStagiaires");
+		}
+		return stagiaires;
 	}
 
 	/**
@@ -177,8 +219,14 @@ public class TirageManager {
 	 * @param groupe
 	 * @throws BLLException
 	 */
-	public void ajoutGroupe(Groupe groupe) throws BLLException {
-		// TODO
+	public void addGroupe(Groupe groupe) throws BLLException {
+		try {
+			verifGroupe(groupe);
+			groupeDAO.insert(groupe);
+
+		} catch (DALException e) {
+			throw new BLLException("Impossible d'ajouter un groupe déja présent");
+		}
 	}
 
 	/**
@@ -209,8 +257,17 @@ public class TirageManager {
 	 * @throws BLLException
 	 */
 	public Groupe getGroupe(int idGroupe) throws BLLException {
-		// TODO
-		return null;
+		Groupe groupe = null;
+		try {
+			groupe = groupeDAO.selectById(idGroupe);
+		} catch (DALException e) {
+			throw new BLLException("Echec de getStagiaire");
+		}
+		if (groupe == null) {
+			throw new BLLException("Cet id de stagiaire n'existe pas");
+		}
+		return groupe;
+
 	}
 
 	/**
@@ -220,7 +277,13 @@ public class TirageManager {
 	 * @throws BLLException
 	 */
 	public List<Groupe> getListGroupe() throws BLLException {
-		// TODO
-		return null;
+		List<Groupe> groupes = null;
+		try {
+			groupes = groupeDAO.selectAll();
+		} catch (DALException e) {
+			throw new BLLException("Echec de getListStagiaires");
+		}
+		return groupes;
+
 	}
 }
