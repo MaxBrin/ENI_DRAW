@@ -71,8 +71,8 @@ public class TirageManager {
 	 * @param groupe
 	 * @throws BLLException
 	 */
-	public void verifGroupe(Groupe groupeAVerifier) throws BLLException {
-		boolean valide = true;
+	public boolean verifGroupe(Groupe groupeAVerifier) throws BLLException {
+		boolean valide = false;
 		StringBuffer sb = new StringBuffer();
 		// Verification si le groupe est déjà présent dans la BD
 		try {
@@ -85,17 +85,14 @@ public class TirageManager {
 					// Vérification si idGroupe du groupe présent est egale à idGroupe du groupe à
 					// vérifier
 					if (groupe.getIdGroupe() == groupeAVerifier.getIdGroupe()) {
-						sb.append("Le groupe est déjà présent dans la BD\n");
-						valide = false;
+						valide = true;
 					}
 				}
 			}
 		} catch (DALException e) {
 			e.printStackTrace();
 		}
-		if (!valide) {
-			throw new BLLException(sb.toString());
-		}
+		return valide;
 	}
 
 	/**
@@ -221,11 +218,15 @@ public class TirageManager {
 	 */
 	public void addGroupe(Groupe groupe) throws BLLException {
 		try {
-			verifGroupe(groupe);
+			if(!verifGroupe(groupe)){
 			groupeDAO.insert(groupe);
+			} else {
+				throw new BLLException("BLL Impossible d'ajouter un groupe déja présent");
+			}
+
 
 		} catch (DALException e) {
-			throw new BLLException("Impossible d'ajouter un groupe déja présent");
+			throw new BLLException("BLL addGroupe Failed");
 		}
 	}
 
@@ -236,7 +237,16 @@ public class TirageManager {
 	 * @throws BLLException
 	 */
 	public void updateGroupe(Groupe groupe) throws BLLException {
-		// TODO
+		try {
+			if(verifGroupe(groupe)) {
+				groupeDAO.update(groupe);
+			} else {
+				throw new BLLException("BLL Groupe inconnu");
+			}
+		} catch (DALException e) {
+			throw new BLLException("BLL Erreur update");
+		}
+
 	}
 
 	/**
@@ -245,8 +255,17 @@ public class TirageManager {
 	 * @param groupe
 	 * @throws BLLException
 	 */
-	public void effacerGroupe(Groupe groupe) throws BLLException {
-		// TODO
+	public void deleteGroupe(Groupe groupe) throws BLLException {
+		try {
+			if(verifGroupe(groupe)){
+				groupeDAO.delete(groupe.getIdGroupe());
+			} else {
+				throw new BLLException(("BLL Groupe inconu"));
+			}
+		}catch (DALException e) {
+			throw new  BLLException(("BLL deleteGroupe Failed"));
+
+		}
 	}
 
 	/**
