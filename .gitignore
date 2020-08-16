@@ -1,3 +1,4 @@
 .properties
 *.properties
 /bin/
+WebContent/META-INF/context.xml

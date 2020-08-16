@@ -4,12 +4,12 @@
 package fr.eni.enidraw.dal.jdbc;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import com.microsoft.sqlserver.jdbc.SQLServerDriver;
-
-import fr.eni.enidraw.dal.Settings;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 /**
  * @author Maxime Brin
@@ -17,24 +17,22 @@ import fr.eni.enidraw.dal.Settings;
  * @dateDeCréation 23 juil. 2020
  */
 public class JdbcTools {
-	private static String monUrl;
-	private static String monUser;
-	private static String monPassword;
+	private static DataSource dataSource;
 
 	static {
-		monUrl = Settings.getProperty("urldb").trim();
-		monUser = Settings.getProperty("userdb").trim();
-		monPassword = Settings.getProperty("passworddb").trim();
 		try {
-			DriverManager.registerDriver(new SQLServerDriver());
-		} catch (SQLException e) {
+			Context context = new InitialContext();
+			dataSource = (DataSource) context.lookup("java:comp/env/jdbc/pool_cnx");
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new RuntimeException("Impossible d'accéder à la base de donn�es");
 		}
 
 	}
 
 	public static Connection getConnection() throws SQLException {
-		Connection conn = DriverManager.getConnection(monUrl, monUser, monPassword);
-		return conn;
+
+		return dataSource.getConnection();
 	}
 }
