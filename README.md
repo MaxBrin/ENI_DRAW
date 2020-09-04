@@ -7,3 +7,5 @@
  - Equilibrer les groupes par titres . Il faut éviter les groupes que de CDA ou de D2WM au maximun.
  - Si il y'a des stagiaires à distance les regroupers dans les mêmes groupes , idem pour les présentiels tout en gardant les contraintes citées au dessus.
 
+Avec la colaboration de [@johdcode](https://github.com/johdcode)
+
